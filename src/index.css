@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-black: #111111;
+  --color-brand-gray: #717171;
+  --color-brand-light: #F9FAFB;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-brand-black bg-white antialiased;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply w-full max-w-5xl mx-auto px-6 py-24 md:py-32;
+  }
+}
