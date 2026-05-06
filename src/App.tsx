@@ -25,6 +25,8 @@ const fadeUp = {
   transition: { duration: 0.5, ease: "easeOut" },
 };
 
+// --- DATA ---
+
 const translations = {
   da: {
     nav: {
@@ -36,7 +38,7 @@ const translations = {
       contact: "Kontakt",
     },
     hero: {
-      title: "De fleste virksomheder ved, hvad deres kunder gør.",
+      title: "De fleste virksomheder ved, hvad deres kunder gør. Færre forstår hvorfor.",
       highlight: "Færre forstår hvorfor.",
       subtitle:
         "Mind the Customer afdækker de holdninger, oplevelser og beslutningsprocesser, der driver kunders valg og fravalg – også når de ikke fremgår af data.",
@@ -57,19 +59,23 @@ Metoden vælges altid ud fra problemstillingen. Aldrig omvendt.`,
       methodCards: [
         {
           label: "Kvalitative analyser",
-          desc: "Interviews, fokusgrupper og etnografiske studier, der afdækker drivkræfter, behov og beslutningsprocesser bag kunders adfærd.",
+          desc:
+            "Interviews, fokusgrupper og etnografiske studier, der afdækker drivkræfter, behov og beslutningsprocesser bag kunders adfærd.",
         },
         {
           label: "Mixed methods",
-          desc: "Kvalitativ dybde kombineret med kvantitativ bredde, når opgaven kræver både forståelse og data, der kan bære beslutninger.",
+          desc:
+            "Kvalitativ dybde kombineret med kvantitativ bredde, når opgaven kræver både forståelse og data, der kan bære beslutninger.",
         },
         {
           label: "AI-assisteret indsigt",
-          desc: "MindCalls og AI-assisterede metoder bruges, når opgaven kræver større skala, hurtigere læring eller nye måder at arbejde med kvalitative indsigter på.",
+          desc:
+            "MindCalls og AI-assisterede metoder bruges, når opgaven kræver større skala, hurtigere læring eller nye måder at arbejde med kvalitative indsigter på.",
         },
         {
           label: "Strategisk rådgivning",
-          desc: "Indsigter formidlet med forretningsmæssig forståelse – tilpasset de beslutninger, de skal understøtte.",
+          desc:
+            "Indsigter formidlet med forretningsmæssig forståelse – tilpasset de beslutninger, de skal understøtte.",
         },
       ],
     },
@@ -193,7 +199,7 @@ Mind the Customer hjælper internationale virksomheder med kvalitative studier p
       contact: "Contact",
     },
     hero: {
-      title: "Most companies know what their customers do.",
+      title: "Most companies know what their customers do. Few understand why.",
       highlight: "Few understand why.",
       subtitle:
         "Mind the Customer uncovers the attitudes, experiences and decision-making processes that drive customer choices and rejections – even when they do not appear in the data.",
@@ -214,19 +220,23 @@ The method is always chosen to fit the challenge. Never the other way around.`,
       methodCards: [
         {
           label: "Qualitative analysis",
-          desc: "Interviews, focus groups and ethnographic studies that uncover the motivations, needs and decision processes behind customer behaviour.",
+          desc:
+            "Interviews, focus groups and ethnographic studies that uncover the motivations, needs and decision processes behind customer behaviour.",
         },
         {
           label: "Mixed methods",
-          desc: "Qualitative depth combined with quantitative breadth when the project requires both understanding and data you can make decisions on.",
+          desc:
+            "Qualitative depth combined with quantitative breadth when the project requires both understanding and data you can make decisions on.",
         },
         {
           label: "AI-assisted insight",
-          desc: "MindCalls and AI-assisted methods are used when the project requires greater scale, faster learning or new ways of working with qualitative insight.",
+          desc:
+            "MindCalls and AI-assisted methods are used when the project requires greater scale, faster learning or new ways of working with qualitative insight.",
         },
         {
           label: "Strategic advisory",
-          desc: "Insights delivered with business understanding – tailored to the decisions they need to support.",
+          desc:
+            "Insights delivered with business understanding – tailored to the decisions they need to support.",
         },
       ],
     },
@@ -342,10 +352,12 @@ Mind the Customer helps international companies with qualitative studies on the 
   },
 };
 
+// --- DESIGN SYSTEM CLASSES ---
 const headingClass = `text-4xl md:text-5xl font-medium tracking-tight`;
 const bodyClass = "text-xl text-gray-700 font-normal";
 const secondaryClass = "text-lg font-normal";
 
+// --- NAVBAR ---
 const Navbar = ({
   lang,
   setLang,
@@ -435,20 +447,25 @@ const Navbar = ({
   );
 };
 
+// --- HERO ---
 const Hero = ({ content }: { content: any }) => {
-  // Remove potential line breaks from the title for split logic.
+  // Remove line breaks in title, then split at the highlight (if present).
   const rawTitle = (content.hero.title || "").replace(/\n/g, " ").trim();
   const highlight = (content.hero.highlight || "").replace(/\n/g, " ").trim();
 
-  // Remove highlight from end of title if duplicated (defensive, supports whatever content structure)
+  // Find highlight at end of string (if present) and separate.
   let mainText = rawTitle;
   if (
     highlight &&
     rawTitle.endsWith(highlight)
   ) {
-    mainText = rawTitle.slice(0, -highlight.length).trim().replace(/[.,;:]$/, "");
+    mainText = rawTitle.slice(0, -highlight.length).trim();
+    // Remove leading . , ; etc from leftover text if necessary
+    if (mainText.endsWith(".") || mainText.endsWith(",") || mainText.endsWith(";") || mainText.endsWith(":")) {
+      mainText = mainText.slice(0, -1).trim();
+    }
   }
-  // Ensure single space between mainText and highlight
+  // Render mainText + highlight (highlight colored same as CTA)
   return (
     <motion.section
       className="section-container min-h-[80vh] flex flex-col justify-center"
@@ -463,10 +480,7 @@ const Hero = ({ content }: { content: any }) => {
         >
           <h1 className={`${headingClass} mb-6 leading-[1.1]`} style={{ color: BRAND_NAVY }}>
             {mainText}{" "}
-            <span
-              // Give highlight text the exact same style as the CTA
-              style={{ color: BRAND_SECONDARY }}
-            >
+            <span style={{ color: BRAND_SECONDARY }}>
               {highlight}
             </span>
           </h1>
@@ -500,6 +514,7 @@ const Hero = ({ content }: { content: any }) => {
   );
 };
 
+// --- WHAT WE DO / METHODS ---
 const WhatWeDo = ({ content }: { content: any }) => (
   <motion.section
     id="services"
@@ -519,19 +534,15 @@ const WhatWeDo = ({ content }: { content: any }) => (
         </div>
         {Array.isArray(content.whatWeDo.methodCards) && (
           <div
-            // Responsive, premium: stacked (mobile), 2x2 (md), 4x1 (xl)
-            className="grid gap-8 mt-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-4"
+            className="grid gap-8 mt-8 grid-cols-1 md:grid-cols-2"
           >
             {content.whatWeDo.methodCards.map((card: any, idx: number) => (
               <div
                 key={idx}
-                className="rounded-xl bg-white/80 border border-gray-100 p-8 shadow-sm flex flex-col"
+                className="rounded-xl bg-white/80 border border-gray-100 p-10 shadow-sm flex flex-col min-h-[240px]"
                 style={{
                   borderColor: BRAND_BG_ACCENT,
-                  minHeight: "230px",
                   boxSizing: "border-box",
-                  // Wider, more readable padding
-                  padding: "2rem",
                 }}
               >
                 <div className="font-semibold mb-3 text-lg" style={{ color: BRAND_NAVY }}>
@@ -549,6 +560,7 @@ const WhatWeDo = ({ content }: { content: any }) => (
   </motion.section>
 );
 
+// --- HOW WE WORK ---
 const HowWeWork = ({ content }: { content: any }) => (
   <motion.section id="how" className="section-container" {...fadeUp}>
     <div className="max-w-3xl">
@@ -584,6 +596,7 @@ const HowWeWork = ({ content }: { content: any }) => (
   </motion.section>
 );
 
+// --- INTERNATIONAL PROJECTS ---
 const InternationalClients = ({ content }: { content: any }) => (
   <motion.section style={{ background: BRAND_NAVY, color: "#fff" }} {...fadeUp}>
     <div className="section-container">
@@ -594,7 +607,7 @@ const InternationalClients = ({ content }: { content: any }) => (
         <h2 className={`${headingClass} mb-6 leading-tight whitespace-pre-line`} style={{ color: "#fff" }}>
           {content.internationalProjects.title ?? ""}
         </h2>
-        <div className={`${bodyClass} text-gray-100 whitespace-pre-line mb-4`}>
+        <div className={`text-xl font-normal text-[#B8C3D6] whitespace-pre-line mb-4`}>
           {content.internationalProjects.body ?? ""}
         </div>
         {Array.isArray(content.internationalProjects.bullets) && (
@@ -623,6 +636,7 @@ const InternationalClients = ({ content }: { content: any }) => (
   </motion.section>
 );
 
+// --- MINDCALLS TEASER ---
 const MindCallsTeaser = ({ content }: { content: any }) => {
   const c = content.mindCallsTeaser;
   return (
@@ -658,6 +672,7 @@ const MindCallsTeaser = ({ content }: { content: any }) => {
   );
 };
 
+// --- MINDCALLS EXPANDED SECTION ---
 const MindCallsDetail = ({ content }: { content: any }) => {
   const c = content.mindCallsDetail;
   return (
@@ -699,6 +714,7 @@ const MindCallsDetail = ({ content }: { content: any }) => {
   );
 };
 
+// --- ABOUT ---
 const About = ({ content }: { content: any }) => (
   <motion.section id="about" style={{ background: BRAND_BG_ACCENT }} {...fadeUp}>
     <div className="section-container">
@@ -754,6 +770,7 @@ const About = ({ content }: { content: any }) => (
   </motion.section>
 );
 
+// --- CLIENTS ---
 const Clients = ({ content }: { content: any }) => (
   <motion.section id="clients" className="section-container pt-0 pb-24" {...fadeUp}>
     <div className="border-t border-gray-100 pt-10">
@@ -790,6 +807,7 @@ const Clients = ({ content }: { content: any }) => (
   </motion.section>
 );
 
+// --- CONTACT ---
 const Contact = ({ content }: { content: any }) => (
   <motion.section id="contact" className="section-container" {...fadeUp}>
     <div className="max-w-4xl py-16">
@@ -827,6 +845,7 @@ const Contact = ({ content }: { content: any }) => (
   </motion.section>
 );
 
+// --- FOOTER ---
 const Footer = ({ content }: { content: any }) => (
   <footer className="py-8 bg-white">
     <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -845,6 +864,7 @@ const Footer = ({ content }: { content: any }) => (
   </footer>
 );
 
+// --- PAGE WRAPPERS ---
 const MainPage = ({ content }: { content: any }) => (
   <AnimatePresence mode="wait">
     <motion.main
@@ -866,7 +886,6 @@ const MainPage = ({ content }: { content: any }) => (
   </AnimatePresence>
 );
 
-// MindCallsPage for deep link/route (optional/minimal, since all MindCalls content is now on one page)
 const MindCallsPage = () => {
   const loc = useLocation();
   const [lang, setLang] = useState<Language>(() => {
@@ -885,7 +904,6 @@ const MindCallsPage = () => {
   }, [loc.pathname]);
   const content = translations[lang];
 
-  // Optionally render detail only if route is used
   return <MindCallsDetail content={content} />;
 };
 
