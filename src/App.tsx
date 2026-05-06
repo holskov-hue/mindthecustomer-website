@@ -1,72 +1,149 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, Mail, Globe, Phone } from "lucide-react";
+import { ArrowRight, Mail, Phone } from "lucide-react";
+import ulrikImg from "./assets/ulrikholskov..png";
+import shadowImg from "./assets/shadows.png";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
+
+// Winter Chill palette
+const BRAND_NAVY = "#1A2745";
+const BRAND_SECONDARY = "#4F7C82";
+const BRAND_BG_ACCENT = "#B8E3E9";
+const BRAND_NEUTRAL = "#93B1B5";
 
 type Language = "da" | "en";
 const fadeUp = {
-  initial: { opacity: 0, y: 14 },
+  initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.55, ease: "easeOut" },
+  transition: { duration: 0.5, ease: "easeOut" },
 };
 
 const translations = {
   da: {
     nav: {
       services: "Hvad vi gør",
-      howWeWork: "Hvordan vi arbejder",
+      howWeWork: "Sådan arbejder vi",
       mindcalls: "MindCalls",
       clients: "Kunder",
-      about: "Om os",
+      about: "Om Mind the Customer",
       contact: "Kontakt",
     },
     hero: {
-      title: "Forstå dine kunder bedre",
+      title: "De fleste virksomheder ved, hvad deres kunder gør.",
+      highlight: "Færre forstår hvorfor.",
       subtitle:
-        "Specialist i kvalitativ kundeindsigt og mixed methods – med fokus på reel forståelse, der kan bruges i praksis.",
+        "Mind the Customer afdækker de holdninger, oplevelser og beslutningsprocesser, der driver kunders valg og fravalg – også når de ikke fremgår af data.",
       cta: "Skal vi tage en snak?",
     },
     whatWeDo: {
-      title: "Hvad vi gør",
-      intro: "Vi hjælper virksomheder med at forstå deres kunder i dybden.",
-      why: "Ikke kun hvad de gør – men hvorfor.",
-      methods:
-        "Arbejdet tager udgangspunkt i kvalitative metoder – og suppleres med kvantitative data, når det er relevant.",
-      custom: "Hver opgave tilpasses den konkrete problemstilling.",
-    },
-    howWeWork: {
-      title: "Hvordan vi arbejder",
-      intro: "Samarbejdet er direkte, enkelt og uden unødige lag.",
-      direct: "Du arbejder med én erfaren rådgiver – fra design til analyse.",
-      label: "Det giver:",
-      benefits: [
-        "kort vej fra spørgsmål til indsigt",
-        "fleksibilitet undervejs",
-        "resultater, der er til at handle på",
+      label: "Hvad vi gør",
+      title: "Indsigt der forklarer – ikke bare beskriver",
+      body: `Data fortæller, hvad der sker. Sjældnere hvorfor – og endnu sjældnere hvad man skal gøre ved det.
+
+Mind the Customer arbejder med kvalitative interviews, fokusgrupper, etnografiske studier og brugerstudier, der kommer tættere på den virkelighed, kunder træffer beslutninger i.
+
+Når det skaber værdi, kombineres de kvalitative indsigter med kvantitative data i en mixed methods-tilgang – så du får både dybde og et stærkere beslutningsgrundlag.
+
+Vi arbejder også med AI som en integreret del af analyseprocessen, når det styrker kvaliteten, hastigheden eller skalerbarheden. Det gælder blandt andet MindCalls, hvor AI-assisterede samtaler gør det muligt at indsamle kvalitative indsigter i langt større skala – uden at miste den menneskelige fortolkning.
+
+Metoden vælges altid ud fra problemstillingen. Aldrig omvendt.`,
+      methodCards: [
+        {
+          label: "Kvalitative analyser",
+          desc: "Interviews, fokusgrupper og etnografiske studier, der afdækker drivkræfter, behov og beslutningsprocesser bag kunders adfærd.",
+        },
+        {
+          label: "Mixed methods",
+          desc: "Kvalitativ dybde kombineret med kvantitativ bredde, når opgaven kræver både forståelse og data, der kan bære beslutninger.",
+        },
+        {
+          label: "AI-assisteret indsigt",
+          desc: "MindCalls og AI-assisterede metoder bruges, når opgaven kræver større skala, hurtigere læring eller nye måder at arbejde med kvalitative indsigter på.",
+        },
+        {
+          label: "Strategisk rådgivning",
+          desc: "Indsigter formidlet med forretningsmæssig forståelse – tilpasset de beslutninger, de skal understøtte.",
+        },
       ],
     },
-    international: {
-      tag: "Internationale projekter",
-      title:
-        "Vi hjælper internationale virksomheder med at forstå danske forbrugere – deres adfærd, præferencer og valg.",
-      desc:
-        "Gennem interviews, fokusgrupper og brugerstudier omsætter vi lokale perspektiver til klare og anvendelige indsigter.",
+    howWeWork: {
+      label: "Sådan arbejder vi",
+      title: "Direkte samarbejde. Fra spørgsmål til indsigt.",
+      body: `Hos Mind the Customer er der ingen lange leverandørkæder, ingen juniors der overtager, og ingen standardskabeloner der presses ned over opgaven.
+
+Du arbejder direkte med en erfaren specialist fra første briefing til færdig analyse – én der både behersker metoderne og forstår den forretningsmæssige kontekst, de skal fungere i.
+
+Det giver kortere vej fra spørgsmål til brugbar indsigt. Og indsigter der faktisk passer til din virkelighed.`,
+      bullets: [
+        "Kort vej fra spørgsmål til indsigt – uden unødige lag",
+        "Metoden tilpasses opgaven undervejs, ikke omvendt",
+        "Resultater du kan handle på med det samme",
+      ],
     },
-    mindcalls: {
-      title: "MindCalls",
-      desc:
-        "MindCalls er en ny måde at arbejde med kundeindsigt på. Gennem AI-assisterede samtaler kan vi indsamle kvalitative indsigter i større skala – uden at miste dybden.",
-      note:
-        "Teknologien bruges som et supplement til klassiske metoder – ikke som erstatning.",
+    internationalProjects: {
+      label: "Internationale projekter",
+      title: "Vil du forstå danske forbrugere?\nDu har brug for mere end en oversætter.",
+      body: `Danske forbrugere har deres egne præferencer, kulturelle koder og måder at træffe beslutninger på. At forstå dem kræver lokal indsigt – ikke bare lokalt sprog.
+
+Mind the Customer hjælper internationale virksomheder med kvalitative studier på det danske marked og leverer indsigter på engelsk, der er præcise, kontekstualiserede og direkte anvendelige.`,
+      bullets: [
+        "Fokusgrupper",
+        "Dybdeinterviews",
+        "Etnografiske studier",
+        "Brugerstudier",
+        "Mixed methods",
+      ],
+    },
+    mindCallsTeaser: {
+      eyebrow: "MindCalls",
+      title: "Kvalitativ dybde. I større skala.",
+      paragraphs: [
+        "Traditionelle interviews giver dybde, men er svære at skalere. Spørgeskemaer når mange mennesker, men mister ofte nuancerne undervejs.",
+        "MindCalls er udviklet til at bygge bro mellem de to verdener. Gennem AI-assisterede samtaler indsamles kvalitative indsigter fra mange kunder – struktureret, analyseret og leveret i et dashboard, der er til at arbejde med.",
+        "Teknologien erstatter ikke den menneskelige analyse. Den gør det muligt at gennemføre den i langt større skala.",
+      ],
+      cta: "Vil du vide mere om MindCalls?",
+      ctaHref: "#mindcalls-detail",
+    },
+    mindCallsDetail: {
+      eyebrow: "MindCalls",
+      title: "Dybde og skalérbarhed – uden kompromis",
+      intro:
+        "Med MindCalls forenes den kvalitative dybde fra interviews med den skalerbarhed, du ellers kun finder i surveys. Gennem AI-assisterede samtaler indsamles nuancerede svar fra mange kunder på én gang – altid med den menneskelige analyse som sidste led.",
+      sections: [
+        {
+          title: "Hvordan fungerer MindCalls?",
+          body:
+            "Kunder inviteres til at deltage i en samtale, hvor en AI-stemme stiller åbne, relevante spørgsmål udviklet specifikt til din problemstilling. Svarene optages og transskriberes automatisk, hvorefter de analyseres af erfarne analytikere. Resultatet leveres i et interaktivt dashboard, som gør det let at finde mønstre og nøglecitater.",
+        },
+        {
+          title: "Hvornår giver MindCalls mest værdi?",
+          body:
+            "MindCalls er særligt værdifuldt, når du har brug for kvalitative indsigter fra mange kunder hurtigt – fx til at afprøve nye koncepter, forstå barrierer ved churn eller få et bredere billede af adfærdsændringer på markedet.",
+        },
+        {
+          title: "Tryghed og GDPR",
+          body:
+            "Datasikkerhed og anonymitet er tænkt ind fra start. Deltagere informeres tydeligt, og data behandles sikkert og efter gældende lovgivning. Du kan til enhver tid få adgang til eller få slettet indsamlede data.",
+        },
+      ],
+      cta: "Tag kontakt for at høre mere",
+      ctaHref: "#contact",
     },
     about: {
-      title: "Om Mind the Customer",
-      p1:
-        "Siden 2013 har Mind the Customer hjulpet virksomheder med at forstå deres kunder – og omsætte indsigt til handling.",
-      p2:
-        "Arbejdet bygger på en enkel tilgang: Indsigt skal være relevant, forståelig og anvendelig.",
+      label: "Om Mind the Customer",
+      title: "Kundeindsigt med dybde – siden 2013",
+      body:
+        "Mind the Customer er grundlagt af Ulrik Holskov, der har arbejdet med kundeindsigt og analyse siden begyndelsen af 00’erne.\n\nBag hvert projekt ligger mere end 20 års erfaring med kvalitative og kvantitative metoder – og en grundlæggende overbevisning om, at indsigt kun skaber værdi, når den bliver brugt.\n\nDerfor stopper arbejdet ikke ved analysen. Det stopper, når du har et klart billede af dine kunder og ved, hvad du skal gøre ved det.",
       mind: {
-        word: "Mind [maind]",
+        word: "Mind [maɪnd]",
         lines: [
           "At være opmærksom på",
           "tage hensyn til",
@@ -75,15 +152,12 @@ const translations = {
           "forstå",
         ],
       },
-    },
-    contact: {
-      title: "Kontakt",
-      desc: "Skal vi tage en snak om din problemstilling?",
-      cta: "Skriv til os",
+      name: "Ulrik Holskov",
     },
     clients: {
-      title: "Udvalgte kunder",
-      list: [
+      label: "Kunder",
+      title: "Eksempler på virksomheder Mind the Customer har arbejdet med",
+      logos: [
         "Forsvaret",
         "Scandlines",
         "Domino's",
@@ -98,6 +172,16 @@ const translations = {
         "Seas NVE",
       ],
     },
+    contact: {
+      label: "Kontakt",
+      title: "Lad os tage en snak om din problemstilling",
+      body:
+        "Uanset om du har en konkret opgave klar eller bare vil undersøge mulighederne, er du velkommen til at række ud. Vi vender hurtigt tilbage.",
+      name: "Ulrik Holskov",
+      email: "ulrik@mindthecustomer.dk",
+      phone: "+45 42 31 01 01",
+    },
+    footer: "© 2025 Mind the Customer",
   },
   en: {
     nav: {
@@ -105,73 +189,132 @@ const translations = {
       howWeWork: "How we work",
       mindcalls: "MindCalls",
       clients: "Clients",
-      about: "About",
+      about: "About Mind the Customer",
       contact: "Contact",
     },
     hero: {
-      title: "Understand your customers better",
+      title: "Most companies know what their customers do.",
+      highlight: "Few understand why.",
       subtitle:
-        "Specialist in qualitative customer insight and mixed methods – creating real understanding that can be used in practice.",
-      cta: "Let's talk",
+        "Mind the Customer uncovers the attitudes, experiences and decision-making processes that drive customer choices and rejections – even when they do not appear in the data.",
+      cta: "Get in touch",
     },
     whatWeDo: {
-      title: "What we do",
-      intro: "We help companies understand their customers in depth.",
-      why: "Not just what they do – but why.",
-      methods:
-        "Our work is grounded in qualitative methods – supported by quantitative data when relevant.",
-      custom: "Every project is tailored to the specific challenge.",
-    },
-    howWeWork: {
-      title: "How we work",
-      intro: "Collaboration is direct, simple, and without unnecessary layers.",
-      direct: "You work with one experienced advisor – from design to analysis.",
-      label: "This gives you:",
-      benefits: [
-        "a short path from question to insight",
-        "flexibility throughout the process",
-        "results that can be acted on",
+      label: "What we do",
+      title: "Insight that explains – not just describes",
+      body: `Data tells you what is happening. Rarer is the why – and rarer still what to do about it.
+
+Mind the Customer works with qualitative interviews, focus groups, ethnographic studies and user research that get closer to the real decisions your customers are making.
+
+Where it creates value, qualitative insights are combined with quantitative data in a mixed methods approach – so you get both depth and a stronger foundation for decisions.
+
+We also work with AI as an integrated part of the analysis process, when it strengthens quality, speed or scalability. This includes MindCalls, where AI-assisted conversations make it possible to collect qualitative insights at far greater scale – without losing human interpretation.
+
+The method is always chosen to fit the challenge. Never the other way around.`,
+      methodCards: [
+        {
+          label: "Qualitative analysis",
+          desc: "Interviews, focus groups and ethnographic studies that uncover the motivations, needs and decision processes behind customer behaviour.",
+        },
+        {
+          label: "Mixed methods",
+          desc: "Qualitative depth combined with quantitative breadth when the project requires both understanding and data you can make decisions on.",
+        },
+        {
+          label: "AI-assisted insight",
+          desc: "MindCalls and AI-assisted methods are used when the project requires greater scale, faster learning or new ways of working with qualitative insight.",
+        },
+        {
+          label: "Strategic advisory",
+          desc: "Insights delivered with business understanding – tailored to the decisions they need to support.",
+        },
       ],
     },
-    international: {
-      tag: "International projects",
-      title:
-        "We help international companies understand Danish consumers – their behaviour, preferences and choices.",
-      desc:
-        "Through interviews, focus groups and user studies, we translate local perspectives into clear and useful insights.",
+    howWeWork: {
+      label: "How we work",
+      title: "Direct collaboration. From question to insight.",
+      body: `At Mind the Customer, there are no long agency chains, no juniors taking over, and no standard templates pushed onto your project.
+
+You work directly with an experienced specialist from first briefing to finished analysis – someone who both masters the methods and understands the business context in which they must work.
+
+That means a shorter path from question to actionable insight. And insights that truly fit your reality.`,
+      bullets: [
+        "Short path from question to insight – with no unnecessary layers",
+        "The method adapts to the project as it develops, not the other way around",
+        "Results you can act on right away",
+      ],
     },
-    mindcalls: {
-      title: "MindCalls",
-      desc:
-        "MindCalls is a new way to work with customer insight. Through AI-assisted conversations, we can collect qualitative insight at scale – without losing depth.",
-      note:
-        "The technology is used as a supplement to classic methods – not as a replacement.",
+    internationalProjects: {
+      label: "International projects",
+      title: "Want to understand Danish consumers?\nYou’ll need more than a translator.",
+      body: `Danish consumers have their own preferences, cultural codes and ways of making decisions. Understanding them takes local insight – not just local language.
+
+Mind the Customer helps international companies with qualitative studies on the Danish market, delivering insights in English that are precise, contextualized and directly actionable.`,
+      bullets: [
+        "Focus groups",
+        "In-depth interviews",
+        "Ethnographic studies",
+        "User studies",
+        "Mixed methods",
+      ],
+    },
+    mindCallsTeaser: {
+      eyebrow: "MindCalls",
+      title: "Qualitative depth. At greater scale.",
+      paragraphs: [
+        "Traditional interviews provide depth, but are hard to scale. Surveys reach many people, but often lose the nuance along the way.",
+        "MindCalls is developed to bridge the two worlds. Through AI-assisted conversations, qualitative insights are gathered from many customers – structured, analysed and delivered in a dashboard you can work with.",
+        "The technology does not replace human analysis. It makes it possible to conduct it at far greater scale.",
+      ],
+      cta: "Want to know more about MindCalls?",
+      ctaHref: "#mindcalls-detail",
+    },
+    mindCallsDetail: {
+      eyebrow: "MindCalls",
+      title: "Depth and scalability – without compromise",
+      intro:
+        "With MindCalls, you get the qualitative richness of interviews with the scalability you’d expect only from surveys. AI-assisted conversations provide nuanced feedback from many customers at once – always with human analysis as the final step.",
+      sections: [
+        {
+          title: "How does MindCalls work?",
+          body:
+            "Customers are invited to take part in a conversation where an AI voice asks open, relevant questions developed for your specific challenge. Responses are recorded and transcribed automatically, before being analysed by experienced researchers. The output is delivered in an interactive dashboard, making it easy to find patterns and key quotes.",
+        },
+        {
+          title: "When is MindCalls most valuable?",
+          body:
+            "MindCalls is especially valuable when you need qualitative insight from many customers quickly – for example, to test new concepts, understand churn barriers, or get a broader picture of market shifts.",
+        },
+        {
+          title: "Trust & GDPR",
+          body:
+            "Data security and anonymity are core. Participants are fully informed, and all data is handled securely and in compliance with regulations. You can access or delete your data at any time.",
+        },
+      ],
+      cta: "Contact us to learn more",
+      ctaHref: "#contact",
     },
     about: {
-      title: "About Mind the Customer",
-      p1:
-        "Since 2013, Mind the Customer has helped companies understand their customers – and turn insight into action.",
-      p2:
-        "The work is built on a simple approach: insight must be relevant, understandable and useful.",
+      label: "About Mind the Customer",
+      title: "Customer insight with depth – since 2013",
+      body:
+        "Mind the Customer was founded by Ulrik Holskov, who has worked with customer insight and analysis since the early 2000s.\n\nBehind every project are more than 20 years of experience with qualitative and quantitative methods – and a fundamental conviction that insight only creates value when it gets used.\n\nThat’s why the work does not stop with the analysis. It stops when you have a clear picture of your customers and know what to do about it.",
       mind: {
         word: "Mind [maɪnd]",
         lines: [
-          "To pay attention to",
+          "To be aware of",
           "to take into account",
           "to care for",
           "to observe",
           "to understand",
         ],
       },
-    },
-    contact: {
-      title: "Contact",
-      desc: "Ready to discuss your challenge?",
-      cta: "Get in touch",
+      name: "Ulrik Holskov",
     },
     clients: {
-      title: "Selected clients",
-      list: [
+      label: "Clients",
+      title: "Examples of companies Mind the Customer has worked with",
+      logos: [
         "Forsvaret",
         "Scandlines",
         "Domino's",
@@ -186,8 +329,22 @@ const translations = {
         "Seas NVE",
       ],
     },
+    contact: {
+      label: "Contact",
+      title: "Let’s talk about your project",
+      body:
+        "Whether you have a concrete assignment ready or just want to explore the possibilities, you are welcome to reach out. We respond quickly.",
+      name: "Ulrik Holskov",
+      email: "ulrik@mindthecustomer.dk",
+      phone: "+45 42 31 01 01",
+    },
+    footer: "© 2025 Mind the Customer",
   },
 };
+
+const headingClass = `text-4xl md:text-5xl font-medium tracking-tight`;
+const bodyClass = "text-xl text-gray-700 font-normal";
+const secondaryClass = "text-lg font-normal";
 
 const Navbar = ({
   lang,
@@ -197,286 +354,490 @@ const Navbar = ({
   lang: Language;
   setLang: (l: Language) => void;
   content: any;
-}) => (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-50 py-6">
-    <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-brand-black flex items-center justify-center text-white font-bold rounded">
-          M
-        </div>
-        <div className="font-semibold text-lg tracking-tight">Mind the Customer</div>
-      </div>
-
-      <div className="flex items-center gap-8">
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-brand-gray">
-          <a href="#services" className="hover:text-brand-black transition-colors">
-            {content.nav.services}
-          </a>
-          <a href="#how" className="hover:text-brand-black transition-colors">
-            {content.nav.howWeWork}
-          </a>
-          <a href="#mindcalls" className="hover:text-brand-black transition-colors">
-            {content.nav.mindcalls}
-          </a>
-          <a href="#about" className="hover:text-brand-black transition-colors">
-            {content.nav.about}
-          </a>
-        </div>
-
-        <div className="flex items-center gap-4 text-xs font-bold text-brand-gray border-l border-gray-100 pl-8">
-          <button
-            onClick={() => setLang("da")}
-            className={`hover:text-brand-black transition-colors ${
-              lang === "da" ? "text-brand-black underline underline-offset-4" : ""
-            }`}
+}) => {
+  const mainLinks = [
+    { label: content.nav.services, href: "/#services", type: "a" },
+    { label: content.nav.howWeWork, href: "/#how", type: "a" },
+    { label: content.nav.mindcalls, href: "#mindcalls", type: "a" },
+    { label: content.nav.about, href: "/#about", type: "a" },
+  ];
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-50 py-5">
+      <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="w-8 h-8 flex items-center justify-center text-white font-bold rounded transition-all hover:opacity-95"
+            style={{ background: BRAND_NAVY }}
           >
-            DA
-          </button>
-          <button
-            onClick={() => setLang("en")}
-            className={`hover:text-brand-black transition-colors ${
-              lang === "en" ? "text-brand-black underline underline-offset-4" : ""
-            }`}
+            M
+          </Link>
+          <div
+            className={`${secondaryClass} font-medium`}
+            style={{ color: BRAND_NAVY }}
           >
-            EN
-          </button>
+            Mind the Customer
+          </div>
         </div>
-      </div>
-    </div>
-  </nav>
-);
-
-const Hero = ({ content }: { content: any }) => (
-  <section className="section-container min-h-[80vh] flex flex-col justify-center">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="max-w-3xl"
-    >
-      <h1 className="text-5xl md:text-7xl font-medium tracking-tight mb-8 leading-[1.1]">
-        {content.hero.title}
-      </h1>
-
-      <p className="text-xl md:text-2xl text-brand-gray font-light leading-relaxed mb-12">
-        {content.hero.subtitle}
-      </p>
-
-      <a
-        href="#contact"
-        className="inline-flex items-center gap-3 bg-brand-black text-white px-8 py-4 rounded-full font-medium hover:scale-105 transition-transform"
-      >
-        {content.hero.cta}
-        <ArrowRight size={20} />
-      </a>
-    </motion.div>
-  </section>
-);
-
-const WhatWeDo = ({ content }: { content: any }) => (
-  <section id="services" className="bg-brand-light">
-    <div className="section-container">
-      <div className="max-w-3xl">
-        <h2 className="text-4xl font-medium mb-10">{content.whatWeDo.title}</h2>
-
-        <p className="text-2xl font-medium text-brand-black mb-6 leading-snug">
-          {content.whatWeDo.intro}
-        </p>
-
-        <p className="text-xl text-brand-gray font-light mb-10 italic">
-          {content.whatWeDo.why}
-        </p>
-
-        <div className="space-y-6 text-brand-gray font-light leading-relaxed">
-          <p>{content.whatWeDo.methods}</p>
-          <p className="font-medium text-brand-black">{content.whatWeDo.custom}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const HowWeWork = ({ content }: { content: any }) => (
-  <section id="how" className="section-container">
-    <div className="grid md:grid-cols-2 gap-20">
-      <div>
-        <h2 className="text-4xl font-medium mb-10">{content.howWeWork.title}</h2>
-
-        <p className="text-xl text-brand-gray font-light leading-relaxed mb-6">
-          {content.howWeWork.intro}
-        </p>
-
-        <p className="text-xl font-medium text-brand-black leading-relaxed">
-          {content.howWeWork.direct}
-        </p>
-      </div>
-
-      <div className="flex flex-col justify-center">
-        <div className="space-y-4">
-          <p className="text-sm font-bold uppercase tracking-widest text-brand-gray mb-6">
-            {content.howWeWork.label}
-          </p>
-
-          {content.howWeWork.benefits.map((benefit: string, i: number) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: 10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 text-lg font-light text-brand-black"
+        <div className="flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8" style={{ color: BRAND_SECONDARY, fontWeight: 500 }}>
+            {mainLinks.map(({ label, href, type }) =>
+              type === "link" ? (
+                <Link
+                  key={href}
+                  to={href}
+                  className="opacity-90 hover:opacity-100 hover:-translate-y-1 transition-all duration-200"
+                  style={{ WebkitTapHighlightColor: "transparent", color: BRAND_SECONDARY }}
+                >
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  key={href}
+                  href={href}
+                  className="opacity-90 hover:opacity-100 hover:-translate-y-1 transition-all duration-200"
+                  style={{ WebkitTapHighlightColor: "transparent", color: BRAND_SECONDARY }}
+                >
+                  {label}
+                </a>
+              )
+            )}
+          </div>
+          <div className="flex items-center gap-4 text-xs font-bold border-l border-gray-100 pl-8" style={{ color: BRAND_NEUTRAL }}>
+            <button
+              onClick={() => setLang("da")}
+              className={`hover:text-brand-black transition-colors ${
+                lang === "da"
+                  ? "underline underline-offset-4"
+                  : ""
+              }`}
+              aria-label="Skift til dansk"
+              style={lang === "da" ? { color: BRAND_SECONDARY } : { color: BRAND_NEUTRAL, opacity: 0.7 }}
             >
-              <div className="w-1.5 h-1.5 bg-brand-black rounded-full" />
-              {benefit}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const InternationalClients = ({ content }: { content: any }) => (
-  <section className="bg-brand-black text-white">
-    <div className="section-container">
-      <div className="grid md:grid-cols-2 gap-20 items-center">
-        <div>
-          <span className="text-xs font-bold uppercase tracking-[0.3em] text-gray-500 mb-6 block">
-            {content.international.tag}
-          </span>
-
-          <h2 className="text-4xl font-medium mb-8 leading-tight">
-            {content.international.title}
-          </h2>
-
-          <p className="text-xl text-gray-400 font-light leading-relaxed">
-            {content.international.desc}
-          </p>
-        </div>
-
-        <div className="hidden md:flex justify-center">
-          <Globe size={300} strokeWidth={0.5} className="text-gray-800" />
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const MindCalls = ({ content }: { content: any }) => (
-  <section id="mindcalls" className="section-container">
-    <div className="max-w-4xl">
-      <h2 className="text-5xl font-medium mb-8">{content.mindcalls.title}</h2>
-
-      <p className="text-2xl text-brand-black font-light leading-relaxed mb-8">
-        {content.mindcalls.desc}
-      </p>
-
-      <p className="text-lg text-brand-gray font-light leading-relaxed italic border-l-2 border-gray-100 pl-8">
-        {content.mindcalls.note}
-      </p>
-    </div>
-  </section>
-);
-
-const About = ({ content }: { content: any }) => (
-  <section id="about" className="bg-brand-light">
-    <div className="section-container">
-      <div className="flex flex-col md:flex-row gap-20">
-        <div className="md:w-1/2">
-          <h2 className="text-4xl font-medium mb-10 leading-tight">
-            {content.about.title}
-          </h2>
-
-          <p className="text-xl text-brand-gray font-light leading-relaxed mb-8">
-            {content.about.p1}
-          </p>
-        </div>
-
-        <div className="md:w-1/2 flex flex-col justify-end">
-          <p className="text-xl font-medium text-brand-black leading-relaxed mb-12">
-            {content.about.p2}
-          </p>
-
-          <div className="border-t border-gray-200 pt-8">
-            <span className="text-xs font-bold block mb-4 uppercase tracking-widest">
-              {content.about.mind.word}
-            </span>
-
-            <div className="space-y-1">
-              {content.about.mind.lines.map((line: string, i: number) => (
-                <p key={i} className="text-base text-brand-gray italic font-light">
-                  {line}
-                </p>
-              ))}
-            </div>
+              DA
+            </button>
+            <button
+              onClick={() => setLang("en")}
+              className={`hover:text-brand-black transition-colors ${
+                lang === "en"
+                  ? "underline underline-offset-4"
+                  : ""
+              }`}
+              aria-label="Switch to English"
+              style={lang === "en" ? { color: BRAND_SECONDARY } : { color: BRAND_NEUTRAL, opacity: 0.7 }}
+            >
+              EN
+            </button>
           </div>
         </div>
       </div>
+    </nav>
+  );
+};
+
+const Hero = ({ content }: { content: any }) => {
+  // Remove potential line breaks from the title for split logic.
+  const rawTitle = (content.hero.title || "").replace(/\n/g, " ").trim();
+  const highlight = (content.hero.highlight || "").replace(/\n/g, " ").trim();
+
+  // Remove highlight from end of title if duplicated (defensive, supports whatever content structure)
+  let mainText = rawTitle;
+  if (
+    highlight &&
+    rawTitle.endsWith(highlight)
+  ) {
+    mainText = rawTitle.slice(0, -highlight.length).trim().replace(/[.,;:]$/, "");
+  }
+  // Ensure single space between mainText and highlight
+  return (
+    <motion.section
+      className="section-container min-h-[80vh] flex flex-col justify-center"
+      {...fadeUp}
+    >
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="max-w-3xl"
+        >
+          <h1 className={`${headingClass} mb-6 leading-[1.1]`} style={{ color: BRAND_NAVY }}>
+            {mainText}{" "}
+            <span
+              // Give highlight text the exact same style as the CTA
+              style={{ color: BRAND_SECONDARY }}
+            >
+              {highlight}
+            </span>
+          </h1>
+          <p className={`${bodyClass} mb-6 whitespace-pre-line`}>
+            {content.hero.subtitle}
+          </p>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
+            style={{
+              background: BRAND_SECONDARY,
+              color: "#fff",
+              transition: "transform 0.2s, background 0.2s",
+            }}
+          >
+            {content.hero.cta}
+            <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
+              <ArrowRight size={20} />
+            </span>
+          </a>
+        </motion.div>
+        <div>
+          <img
+            src={shadowImg}
+            alt="Shadows representing human behaviour"
+            className="w-full h-auto max-h-[520px] object-contain rounded-md grayscale contrast-125 transition-transform duration-500 hover:scale-[1.01]"
+          />
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+const WhatWeDo = ({ content }: { content: any }) => (
+  <motion.section
+    id="services"
+    style={{ background: BRAND_BG_ACCENT, transition: "background 0.3s" }}
+    {...fadeUp}
+  >
+    <div className="section-container">
+      <div className="max-w-3xl">
+        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+          {content.whatWeDo.label ?? ""}
+        </span>
+        <h2 className={`${headingClass} mb-6`} style={{ color: BRAND_NAVY }}>
+          {content.whatWeDo.title ?? ""}
+        </h2>
+        <div className={`${bodyClass} mb-8 whitespace-pre-line`}>
+          {content.whatWeDo.body ?? ""}
+        </div>
+        {Array.isArray(content.whatWeDo.methodCards) && (
+          <div
+            // Responsive, premium: stacked (mobile), 2x2 (md), 4x1 (xl)
+            className="grid gap-8 mt-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-4"
+          >
+            {content.whatWeDo.methodCards.map((card: any, idx: number) => (
+              <div
+                key={idx}
+                className="rounded-xl bg-white/80 border border-gray-100 p-8 shadow-sm flex flex-col"
+                style={{
+                  borderColor: BRAND_BG_ACCENT,
+                  minHeight: "230px",
+                  boxSizing: "border-box",
+                  // Wider, more readable padding
+                  padding: "2rem",
+                }}
+              >
+                <div className="font-semibold mb-3 text-lg" style={{ color: BRAND_NAVY }}>
+                  {card.label ?? ""}
+                </div>
+                <div className="text-gray-700 text-base" style={{ lineHeight: 1.6 }}>
+                  {card.desc ?? ""}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
-  </section>
+  </motion.section>
 );
 
-const Clients = ({ content }: { content: any }) => (
-  <section id="clients" className="section-container pt-0 pb-32">
-    <div className="border-t border-gray-100 pt-16">
-      <p className="text-[10px] uppercase tracking-[0.3em] text-brand-gray mb-12 text-center">
-        {content.clients.title}
-      </p>
-
-      <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
-        {content.clients.list.map((client: string, i: number) => (
-          <span key={i} className="text-lg font-medium tracking-tight text-brand-black">
-            {client}
-          </span>
+const HowWeWork = ({ content }: { content: any }) => (
+  <motion.section id="how" className="section-container" {...fadeUp}>
+    <div className="max-w-3xl">
+      <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+        {content.howWeWork.label ?? ""}
+      </span>
+      <h2 className={`${headingClass} mb-6 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
+        {content.howWeWork.title ?? ""}
+      </h2>
+      {content.howWeWork.body && (
+        <div className={`${bodyClass} mb-8 whitespace-pre-line`}>
+          {content.howWeWork.body}
+        </div>
+      )}
+      <div className="space-y-4 mt-8">
+        {(content.howWeWork.bullets ?? []).map((point: string, idx: number) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: 10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className={`flex items-start gap-4 ${secondaryClass} whitespace-pre-line`}
+            style={{ color: BRAND_NEUTRAL }}
+          >
+            <div className="w-5 h-5 flex items-center justify-center border border-gray-300 rounded-full shrink-0 mt-1" style={{ borderColor: BRAND_NEUTRAL }}>
+              <div className="w-1.5 h-1.5" style={{ background: BRAND_SECONDARY, borderRadius: "50%" }} />
+            </div>
+            <span>{point}</span>
+          </motion.div>
         ))}
       </div>
     </div>
-  </section>
+  </motion.section>
+);
+
+const InternationalClients = ({ content }: { content: any }) => (
+  <motion.section style={{ background: BRAND_NAVY, color: "#fff" }} {...fadeUp}>
+    <div className="section-container">
+      <div className="max-w-3xl mx-auto py-10">
+        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+          {content.internationalProjects.label ?? ""}
+        </span>
+        <h2 className={`${headingClass} mb-6 leading-tight whitespace-pre-line`} style={{ color: "#fff" }}>
+          {content.internationalProjects.title ?? ""}
+        </h2>
+        <div className={`${bodyClass} text-gray-100 whitespace-pre-line mb-4`}>
+          {content.internationalProjects.body ?? ""}
+        </div>
+        {Array.isArray(content.internationalProjects.bullets) && (
+          <div className="flex flex-wrap gap-3 mt-4">
+            {content.internationalProjects.bullets.map((tag: string, idx: number) => (
+              <span
+                key={idx}
+                className="text-xs"
+                style={{
+                  background: BRAND_SECONDARY,
+                  color: "#fff",
+                  borderRadius: "9999px",
+                  padding: "3px 16px",
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                  letterSpacing: "0.06em",
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </motion.section>
+);
+
+const MindCallsTeaser = ({ content }: { content: any }) => {
+  const c = content.mindCallsTeaser;
+  return (
+    <motion.section id="mindcalls" className="section-container" {...fadeUp}>
+      <div className="max-w-3xl">
+        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+          {c.eyebrow ?? ""}
+        </span>
+        <h2 className={`${headingClass} mb-6 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
+          {c.title ?? ""}
+        </h2>
+        {(Array.isArray(c.paragraphs) ? c.paragraphs : []).map((p: string, i: number) => (
+          <div key={i} className={`${bodyClass} mb-4 whitespace-pre-line`}>
+            {p}
+          </div>
+        ))}
+        <a
+          href={c.ctaHref}
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
+          style={{
+            background: BRAND_SECONDARY,
+            color: "#fff",
+            transition: "transform 0.2s, background 0.2s",
+          }}
+        >
+          {c.cta}
+          <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
+            <ArrowRight size={20} />
+          </span>
+        </a>
+      </div>
+    </motion.section>
+  );
+};
+
+const MindCallsDetail = ({ content }: { content: any }) => {
+  const c = content.mindCallsDetail;
+  return (
+    <motion.section id="mindcalls-detail" className="section-container" {...fadeUp}>
+      <div className="max-w-3xl">
+        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+          {c.eyebrow ?? ""}
+        </span>
+        <h2 className={`${headingClass} mb-6 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
+          {c.title ?? ""}
+        </h2>
+        <div className={`${bodyClass} mb-6 whitespace-pre-line`}>
+          {c.intro}
+        </div>
+        {Array.isArray(c.sections) && c.sections.map((section: any, idx: number) => (
+          <div key={idx} className="mb-6">
+            <div className="font-semibold text-lg mb-2" style={{ color: BRAND_SECONDARY }}>
+              {section.title}
+            </div>
+            <div className="text-base text-gray-700 whitespace-pre-line">{section.body}</div>
+          </div>
+        ))}
+        <a
+          href={c.ctaHref}
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
+          style={{
+            background: BRAND_SECONDARY,
+            color: "#fff",
+            transition: "transform 0.2s, background 0.2s",
+          }}
+        >
+          {c.cta}
+          <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
+            <ArrowRight size={20} />
+          </span>
+        </a>
+      </div>
+    </motion.section>
+  );
+};
+
+const About = ({ content }: { content: any }) => (
+  <motion.section id="about" style={{ background: BRAND_BG_ACCENT }} {...fadeUp}>
+    <div className="section-container">
+      <div className="flex flex-col md:flex-row gap-16">
+        <div className="md:w-3/5">
+          <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+            {content.about.label ?? ""}
+          </span>
+          <h2 className={`${headingClass} mb-6 leading-tight`} style={{ color: BRAND_NAVY }}>
+            {content.about.title ?? ""}
+          </h2>
+          <div className={`${bodyClass} mb-8 whitespace-pre-line`} style={{ color: BRAND_NAVY, opacity: 0.88 }}>
+            {content.about.body ?? ""}
+          </div>
+        </div>
+        <div className="md:w-2/5 flex flex-col justify-end items-start">
+          <div className="flex flex-col items-center md:items-start mb-8 md:mb-0 w-full">
+            <img
+              src={ulrikImg}
+              alt="Ulrik Holskov"
+              className="w-full max-w-[300px] h-auto object-contain rounded-xl mb-2"
+              style={{ background: "#ececec" }}
+            />
+            <span className="text-sm" style={{ color: BRAND_NEUTRAL }}>
+              {content.about.name}
+            </span>
+          </div>
+          {content.about.mind && (
+            <div className="border-t border-gray-200 pt-6 w-full">
+              <span className="text-sm font-medium block mb-3" style={{ color: BRAND_NAVY }}>
+                {content.about.mind.word}
+              </span>
+              <div className="space-y-1">
+                {content.about.mind.lines.map((line: string, i: number) => (
+                  <motion.p
+                    key={i}
+                    className={
+                      secondaryClass +
+                      " cursor-pointer transition-transform duration-200"
+                    }
+                    whileHover={{ x: 6 }}
+                    style={{ color: BRAND_NEUTRAL }}
+                  >
+                    {line}
+                  </motion.p>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </motion.section>
+);
+
+const Clients = ({ content }: { content: any }) => (
+  <motion.section id="clients" className="section-container pt-0 pb-24" {...fadeUp}>
+    <div className="border-t border-gray-100 pt-10">
+      <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+        {content.clients.label ?? ""}
+      </span>
+      <h2 className={`${headingClass} mb-8 text-center`} style={{ color: BRAND_NAVY }}>
+        {content.clients.title ?? ""}
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 justify-items-center mt-8">
+        {(content.clients.logos ?? []).map((client: string, i: number) => (
+          <motion.div
+            key={i}
+            className={
+              "rounded-xl bg-white/80 border p-4 text-center " +
+              secondaryClass +
+              " tracking-tight cursor-pointer transition-all"
+            }
+            whileHover={{ opacity: 1, y: -2, scale: 1.05 }}
+            transition={{ type: "tween", duration: 0.18 }}
+            style={{
+              opacity: 0.82,
+              minWidth: "8rem",
+              color: BRAND_NEUTRAL,
+              fontWeight: 500,
+              borderColor: BRAND_BG_ACCENT,
+            }}
+          >
+            {client}
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </motion.section>
 );
 
 const Contact = ({ content }: { content: any }) => (
-  <section id="contact" className="section-container">
-    <div className="max-w-4xl py-20">
-      <h2 className="text-6xl font-medium mb-12 tracking-tight">
-        {content.contact.title}
+  <motion.section id="contact" className="section-container" {...fadeUp}>
+    <div className="max-w-4xl py-16">
+      <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+        {content.contact.label ?? ""}
+      </span>
+      <h2 className={`${headingClass} mb-6`} style={{ color: BRAND_NAVY }}>
+        {content.contact.title ?? ""}
       </h2>
-
-      <p className="text-3xl text-brand-gray font-light leading-relaxed mb-16">
-        {content.contact.desc}
-      </p>
-
-      <div className="flex flex-col md:flex-row gap-12">
+      <div className={`${bodyClass} mb-8 whitespace-pre-line`} style={{ color: BRAND_NAVY, opacity: 0.88 }}>
+        {content.contact.body ?? ""}
+      </div>
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className={`${bodyClass} flex items-center gap-4 font-medium`} style={{ color: BRAND_NAVY }}>
+          <span className="block">{content.contact.name}</span>
+        </div>
         <a
-          href="mailto:ulrik@mindthecustomer.dk"
-          className="flex items-center gap-4 text-2xl font-medium text-brand-black hover:underline underline-offset-8"
+          href={`mailto:${content.contact.email}`}
+          className={`${bodyClass} flex items-center gap-4 hover:underline underline-offset-8 transition-transform duration-200 hover:scale-[1.025] focus:outline-none`}
+          style={{ color: BRAND_SECONDARY }}
         >
           <Mail size={28} />
-          ulrik@mindthecustomer.dk
+          {content.contact.email}
         </a>
-
         <a
-          href="tel:+4542310101"
-          className="flex items-center gap-4 text-2xl font-medium text-brand-black hover:underline underline-offset-8"
+          href={`tel:${content.contact.phone.replace(/\s/g, "")}`}
+          className={`${bodyClass} flex items-center gap-4 hover:underline underline-offset-8 transition-transform duration-200 hover:scale-[1.025] focus:outline-none`}
+          style={{ color: BRAND_SECONDARY }}
         >
           <Phone size={28} />
-          +45 42 31 01 01
+          {content.contact.phone}
         </a>
       </div>
     </div>
-  </section>
+  </motion.section>
 );
 
-const Footer = () => (
-  <footer className="py-12 bg-white">
-    <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-      <div className="text-brand-gray text-sm font-medium">
-        © 2024 Mind the Customer
+const Footer = ({ content }: { content: any }) => (
+  <footer className="py-8 bg-white">
+    <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="text-sm font-normal" style={{ color: BRAND_SECONDARY, opacity: 0.93 }}>
+        {content.footer}
       </div>
-
-      <div className="flex gap-8 text-sm font-medium text-brand-gray">
-        <a href="#" className="hover:text-brand-black transition-colors">
+      <div className="flex gap-8 text-sm font-normal" style={{ color: BRAND_NEUTRAL }}>
+        <a href="#" className="hover:text-black transition-colors">
           LinkedIn
         </a>
-        <a href="#" className="hover:text-brand-black transition-colors">
+        <a href="#" className="hover:text-black transition-colors">
           Cookies
         </a>
       </div>
@@ -484,34 +845,66 @@ const Footer = () => (
   </footer>
 );
 
+const MainPage = ({ content }: { content: any }) => (
+  <AnimatePresence mode="wait">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Hero content={content} />
+      <WhatWeDo content={content} />
+      <HowWeWork content={content} />
+      <InternationalClients content={content} />
+      <MindCallsTeaser content={content} />
+      <MindCallsDetail content={content} />
+      <About content={content} />
+      <Clients content={content} />
+      <Contact content={content} />
+    </motion.main>
+  </AnimatePresence>
+);
+
+// MindCallsPage for deep link/route (optional/minimal, since all MindCalls content is now on one page)
+const MindCallsPage = () => {
+  const loc = useLocation();
+  const [lang, setLang] = useState<Language>(() => {
+    if (
+      typeof window !== "undefined" &&
+      (window.location.pathname.startsWith("/en") ||
+        window.location.pathname.endsWith("/en"))
+    )
+      return "en";
+    return "da";
+  });
+
+  useEffect(() => {
+    if (loc.pathname.startsWith("/en")) setLang("en");
+    else setLang("da");
+  }, [loc.pathname]);
+  const content = translations[lang];
+
+  // Optionally render detail only if route is used
+  return <MindCallsDetail content={content} />;
+};
+
 export default function App() {
   const [lang, setLang] = useState<Language>("da");
   const content = translations[lang];
 
   return (
-    <div className="min-h-screen">
-      <Navbar lang={lang} setLang={setLang} content={content} />
+    <Router>
+      <div className="min-h-screen">
+        <Navbar lang={lang} setLang={setLang} content={content} />
 
-      <AnimatePresence mode="wait">
-        <motion.main
-          key={lang}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Hero content={content} />
-          <WhatWeDo content={content} />
-          <HowWeWork content={content} />
-          <InternationalClients content={content} />
-          <MindCalls content={content} />
-          <About content={content} />
-          <Clients content={content} />
-          <Contact content={content} />
-        </motion.main>
-      </AnimatePresence>
+        <Routes>
+          <Route path="/" element={<MainPage content={content} />} />
+          <Route path="/mindcalls" element={<MindCallsPage />} />
+        </Routes>
 
-      <Footer />
-    </div>
+        <Footer content={content} />
+      </div>
+    </Router>
   );
 }
