@@ -9,6 +9,7 @@ import {
   Route,
   Link,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 
 // Winter Chill palette
@@ -36,24 +37,26 @@ const translations = {
       clients: "Kunder",
       about: "Om Mind the Customer",
       contact: "Kontakt",
+      international: "Internationale projekter",
     },
     hero: {
-      title: "De fleste virksomheder ved, hvad deres kunder gør. Færre forstår hvorfor.",
+      title:
+        "De fleste virksomheder ved, hvad deres kunder gør. Færre forstår hvorfor.",
       highlight: "Færre forstår hvorfor.",
       subtitle:
-        "Mind the Customer afdækker de holdninger, oplevelser og beslutningsprocesser, der driver kunders valg og fravalg – også når de ikke fremgår af data.",
+        "Mind the Customer afdækker det der ligger bag kunders valg og fravalg – også når det ikke fremgår af synlige data.",
       cta: "Skal vi tage en snak?",
     },
     whatWeDo: {
       label: "Hvad vi gør",
-      title: "Indsigt der forklarer – ikke bare beskriver",
-      body: `Data fortæller, hvad der sker. Sjældnere hvorfor – og endnu sjældnere hvad man skal gøre ved det.
+      title: "Indsigt der forklarer — ikke bare beskriver",
+      body: `Data fortæller, hvad der sker. Sjældnere hvorfor — og endnu sjældnere, hvad man skal gøre ved det.
 
-Mind the Customer arbejder med kvalitative interviews, fokusgrupper, etnografiske studier og brugerstudier, der kommer tættere på den virkelighed, kunder træffer beslutninger i.
+Mind the Customer arbejder med kvalitative interviews, fokusgrupper, etnografiske studier og brugerstudier, der afdækker de holdninger, oplevelser og drivkræfter, som ligger bag kunders valg og fravalg.
 
-Når det skaber værdi, kombineres de kvalitative indsigter med kvantitative data i en mixed methods-tilgang – så du får både dybde og et stærkere beslutningsgrundlag.
+Afhængigt af problemstillingen suppleres de kvalitative indsigter med kvantitative analyser eller mixed methods-tilgange — så du får både dybde, overblik og et stærkere beslutningsgrundlag.
 
-Vi arbejder også med AI som en integreret del af analyseprocessen, når det styrker kvaliteten, hastigheden eller skalerbarheden. Det gælder blandt andet MindCalls, hvor AI-assisterede samtaler gør det muligt at indsamle kvalitative indsigter i langt større skala – uden at miste den menneskelige fortolkning.
+AI indgår også som en integreret del af analysearbejdet, når det styrker kvalitet, hastighed eller skalerbarhed. Det gælder blandt andet MindCalls, hvor AI-assisterede samtaler gør det muligt at indsamle kvalitative indsigter i langt større skala — uden at miste den menneskelige fortolkning.
 
 Metoden vælges altid ud fra problemstillingen. Aldrig omvendt.`,
       methodCards: [
@@ -65,7 +68,7 @@ Metoden vælges altid ud fra problemstillingen. Aldrig omvendt.`,
         {
           label: "Mixed methods",
           desc:
-            "Kvalitativ dybde kombineret med kvantitativ bredde, når opgaven kræver både forståelse og data, der kan bære beslutninger.",
+            "Kvantitative analyser og mixed methods-tilgange, når opgaven kræver både overblik, statistisk tyngde og dybere forståelse.",
         },
         {
           label: "AI-assisteret indsigt",
@@ -95,10 +98,12 @@ Det giver kortere vej fra spørgsmål til brugbar indsigt. Og indsigter der fakt
     },
     internationalProjects: {
       label: "Internationale projekter",
-      title: "Vil du forstå danske forbrugere?\nDu har brug for mere end en oversætter.",
-      body: `Danske forbrugere har deres egne præferencer, kulturelle koder og måder at træffe beslutninger på. At forstå dem kræver lokal indsigt – ikke bare lokalt sprog.
+      title: "Vil du forstå danske forbrugere?\n\nEller sammenligne indsigter på tværs af markeder?",
+      body: `Danske forbrugere har deres egne præferencer, kulturelle koder og måder at træffe beslutninger på. At forstå dem kræver lokal indsigt, kontekstforståelse og metoder, der kommer tættere på virkeligheden bag data.
 
-Mind the Customer hjælper internationale virksomheder med kvalitative studier på det danske marked og leverer indsigter på engelsk, der er præcise, kontekstualiserede og direkte anvendelige.`,
+Mind the Customer hjælper både internationale virksomheder med studier på det danske marked og danske virksomheder, der arbejder internationalt eller ønsker indsigter på tværs af lande og kulturer.
+
+Studier gennemføres både lokalt og i samarbejde med internationale partnere, afhængigt af projektets omfang og geografiske behov.`,
       bullets: [
         "Fokusgrupper",
         "Dybdeinterviews",
@@ -108,40 +113,74 @@ Mind the Customer hjælper internationale virksomheder med kvalitative studier p
       ],
     },
     mindCallsTeaser: {
-      eyebrow: "MindCalls",
-      title: "Kvalitativ dybde. I større skala.",
+      eyebrow: "",
+      title: "Kvalitativ dybde.\n\nI kvantitativ skala.",
       paragraphs: [
-        "Traditionelle interviews giver dybde, men er svære at skalere. Spørgeskemaer når mange mennesker, men mister ofte nuancerne undervejs.",
-        "MindCalls er udviklet til at bygge bro mellem de to verdener. Gennem AI-assisterede samtaler indsamles kvalitative indsigter fra mange kunder – struktureret, analyseret og leveret i et dashboard, der er til at arbejde med.",
-        "Teknologien erstatter ikke den menneskelige analyse. Den gør det muligt at gennemføre den i langt større skala.",
+        "MindCalls kombinerer AI-assisterede samtaler, intelligent analyse og menneskelig fortolkning i én samlet platform for kundeindsigt.\n\nResultatet er dybere læring, hurtigere analyse og kvalitative indsigter i langt større skala.",
       ],
-      cta: "Vil du vide mere om MindCalls?",
-      ctaHref: "#mindcalls-detail",
+      cta: "Læs mere om MindCalls →",
+      ctaHref: "/mindcalls",
     },
     mindCallsDetail: {
-      eyebrow: "MindCalls",
-      title: "Dybde og skalérbarhed – uden kompromis",
-      intro:
-        "Med MindCalls forenes den kvalitative dybde fra interviews med den skalerbarhed, du ellers kun finder i surveys. Gennem AI-assisterede samtaler indsamles nuancerede svar fra mange kunder på én gang – altid med den menneskelige analyse som sidste led.",
-      sections: [
+      hero: {
+        eyebrow: "MindCalls",
+        title: "Kvalitativ dybde. I kvantitativ skala.",
+        subtitle:
+          "Platformen til AI-assisteret kundeindsigt, hvor menneskelig analyse og teknologi mødes.",
+        cta: "Book en demo",
+        ctaHref: "#contact",
+      },
+      problem: {
+        title: "Stærkere indsigt kræver mere end tal og enkle spørgeskemaer",
+        body: `Traditionelle surveys kan måle, hvad der sker. Men når du vil forstå, hvorfor kunder vælger til, vælger fra – eller hvorfor markedet bevæger sig – er klassiske undersøgelser ofte ikke nok. 
+          
+Personlige interviews giver dybde, men kræver tid og ressourcer, der sætter en naturlig grænse for, hvor mange kunder du når. Meget viden forbliver derfor skjult under overfladen.`,
+      },
+      solution: {
+        title: "MindCalls forener AI, samtale og menneskelig analyse",
+        body: `Med MindCalls inviteres mange kunder til at deltage i samtaler, hvor en AI-stemme stiller åbne og relevante spørgsmål. Svarene optages, transskriberes og bearbejdes hurtigt, så menneskelige analytikere kan fokusere på at fortolke nuancer og mønstre i det komplette datamateriale.
+
+Resultatet er dybere læring, hurtigere analyse og kvalitative indsigter i langt større skala – uden at miste det menneskelige blik.`,
+      },
+      features: [
         {
-          title: "Hvordan fungerer MindCalls?",
-          body:
-            "Kunder inviteres til at deltage i en samtale, hvor en AI-stemme stiller åbne, relevante spørgsmål udviklet specifikt til din problemstilling. Svarene optages og transskriberes automatisk, hvorefter de analyseres af erfarne analytikere. Resultatet leveres i et interaktivt dashboard, som gør det let at finde mønstre og nøglecitater.",
+          title: "AI-assisterede samtaler",
+          desc: "Skalérbare interviews, hvor en AI-stemme stiller relevante spørgsmål til mange kunder parallelt.",
         },
         {
-          title: "Hvornår giver MindCalls mest værdi?",
-          body:
-            "MindCalls er særligt værdifuldt, når du har brug for kvalitative indsigter fra mange kunder hurtigt – fx til at afprøve nye koncepter, forstå barrierer ved churn eller få et bredere billede af adfærdsændringer på markedet.",
+          title: "Automatisk transskription",
+          desc: "Svarene konverteres lynhurtigt til tekst – og forberedes til analyse.",
         },
         {
-          title: "Tryghed og GDPR",
-          body:
-            "Datasikkerhed og anonymitet er tænkt ind fra start. Deltagere informeres tydeligt, og data behandles sikkert og efter gældende lovgivning. Du kan til enhver tid få adgang til eller få slettet indsamlede data.",
+          title: "Intelligent analyse",
+          desc: "Tekstanalyse og clustering hjælper med at strukturere store mængder af kundecitater og indsigter.",
+        },
+        {
+          title: "Menneskelig fortolkning",
+          desc: "Erfarne analytikere trækker de afgørende mønstre og indsigter ud – så du får dybde og overblik.",
+        },
+        {
+          title: "Handlingsrettet dashboard",
+          desc: "Resultaterne præsenteres i et interaktivt dashboard, klar til at understøtte beslutninger.",
         },
       ],
-      cta: "Tag kontakt for at høre mere",
-      ctaHref: "#contact",
+      benefits: {
+        title: "Fordele ved MindCalls",
+        bullets: [
+          "Få kvalitative indsigter fra langt flere kunder hurtigere",
+          "Behold dybden og nuancerne – tab ikke vigtig information i skemaer",
+          "Kort vej fra dataindsamling til analyse",
+          "Fleksibel opsætning til din målgruppe og problemstilling"
+        ],
+      },
+      gdpr: {
+        title: "Datasikkerhed og GDPR",
+        body: `MindCalls-platformen er udviklet med datasikkerhed og anonymitet som fundament. Deltagere informeres tydeligt om formål og databehandling, og alt håndteres i overensstemmelse med gældende lovgivning. Du har til enhver tid adgang til – eller kan få slettet – indsamlede data.`,
+      },
+      contact: {
+        cta: "Book en intro eller spørg om mulighederne",
+        ctaHref: "#contact"
+      }
     },
     about: {
       label: "Om Mind the Customer",
@@ -197,9 +236,11 @@ Mind the Customer hjælper internationale virksomheder med kvalitative studier p
       clients: "Clients",
       about: "About Mind the Customer",
       contact: "Contact",
+      international: "International projects",
     },
     hero: {
-      title: "Most companies know what their customers do. Few understand why.",
+      title:
+        "Most companies know what their customers do. Few understand why.",
       highlight: "Few understand why.",
       subtitle:
         "Mind the Customer uncovers the attitudes, experiences and decision-making processes that drive customer choices and rejections – even when they do not appear in the data.",
@@ -207,16 +248,16 @@ Mind the Customer hjælper internationale virksomheder med kvalitative studier p
     },
     whatWeDo: {
       label: "What we do",
-      title: "Insight that explains – not just describes",
-      body: `Data tells you what is happening. Rarer is the why – and rarer still what to do about it.
+      title: "Research that explains — not just describes",
+      body: `Data tells you what is happening. Less often why — and even less often what to do about it.
 
-Mind the Customer works with qualitative interviews, focus groups, ethnographic studies and user research that get closer to the real decisions your customers are making.
+Mind the Customer works with qualitative interviews, focus groups, ethnographic studies and user research that uncover the attitudes, experiences and underlying drivers behind customers’ choices and behaviour.
 
-Where it creates value, qualitative insights are combined with quantitative data in a mixed methods approach – so you get both depth and a stronger foundation for decisions.
+Depending on the problem, qualitative insights are complemented with quantitative analysis or mixed methods approaches — providing both depth, perspective and a stronger foundation for decision-making.
 
-We also work with AI as an integrated part of the analysis process, when it strengthens quality, speed or scalability. This includes MindCalls, where AI-assisted conversations make it possible to collect qualitative insights at far greater scale – without losing human interpretation.
+AI is also integrated into the research process when it improves quality, speed or scalability. This includes MindCalls, where AI-assisted conversations make it possible to collect qualitative insights at a much larger scale — without losing human interpretation and contextual understanding.
 
-The method is always chosen to fit the challenge. Never the other way around.`,
+The method is always chosen based on the problem. Never the other way around.`,
       methodCards: [
         {
           label: "Qualitative analysis",
@@ -226,7 +267,7 @@ The method is always chosen to fit the challenge. Never the other way around.`,
         {
           label: "Mixed methods",
           desc:
-            "Qualitative depth combined with quantitative breadth when the project requires both understanding and data you can make decisions on.",
+            "Quantitative analysis and mixed methods approaches when the project requires both strategic overview, statistical rigour and deeper understanding.",
         },
         {
           label: "AI-assisted insight",
@@ -256,53 +297,89 @@ That means a shorter path from question to actionable insight. And insights that
     },
     internationalProjects: {
       label: "International projects",
-      title: "Want to understand Danish consumers?\nYou’ll need more than a translator.",
-      body: `Danish consumers have their own preferences, cultural codes and ways of making decisions. Understanding them takes local insight – not just local language.
+      title: "Looking to understand Danish consumers?\n\nOr compare insights across markets?",
+      body: `Danish consumers have their own preferences, cultural codes and ways of making decisions. Understanding them requires local insight, contextual understanding and methods that get closer to the reality behind the data.
 
-Mind the Customer helps international companies with qualitative studies on the Danish market, delivering insights in English that are precise, contextualized and directly actionable.`,
+Mind the Customer supports both international companies conducting studies in Denmark and Danish companies working internationally or seeking insights across countries and cultures.
+
+Studies are conducted both locally and in collaboration with international partners, depending on the scope and geographic needs of the project.`,
       bullets: [
         "Focus groups",
         "In-depth interviews",
         "Ethnographic studies",
-        "User studies",
+        "User research",
         "Mixed methods",
       ],
     },
     mindCallsTeaser: {
-      eyebrow: "MindCalls",
-      title: "Qualitative depth. At greater scale.",
+      eyebrow: "",
+      title: "Qualitative depth.\n\nAt quantitative scale.",
       paragraphs: [
-        "Traditional interviews provide depth, but are hard to scale. Surveys reach many people, but often lose the nuance along the way.",
-        "MindCalls is developed to bridge the two worlds. Through AI-assisted conversations, qualitative insights are gathered from many customers – structured, analysed and delivered in a dashboard you can work with.",
-        "The technology does not replace human analysis. It makes it possible to conduct it at far greater scale.",
+        "MindCalls combines AI-assisted conversations, intelligent analysis and human interpretation in one integrated customer insight platform.\n\nThe result is deeper learning, faster analysis and qualitative insight at a much larger scale.",
       ],
-      cta: "Want to know more about MindCalls?",
-      ctaHref: "#mindcalls-detail",
+      cta: "Learn more about MindCalls →",
+      ctaHref: "/mindcalls",
     },
     mindCallsDetail: {
-      eyebrow: "MindCalls",
-      title: "Depth and scalability – without compromise",
-      intro:
-        "With MindCalls, you get the qualitative richness of interviews with the scalability you’d expect only from surveys. AI-assisted conversations provide nuanced feedback from many customers at once – always with human analysis as the final step.",
-      sections: [
+      hero: {
+        eyebrow: "MindCalls",
+        title: "Qualitative depth. At quantitative scale.",
+        subtitle:
+          "The platform for AI-assisted customer insight, combining human analysis and technology.",
+        cta: "Book a demo",
+        ctaHref: "#contact",
+      },
+      problem: {
+        title: "Deeper insight takes more than numbers and basic surveys",
+        body: `Traditional surveys can measure what’s happening. But when you want to know why customers choose or leave – or why the market is shifting – classic questionnaires are often not enough. 
+
+Personal interviews provide depth, but require resources that naturally limit how many customers you reach. Much insight is left hidden below the surface.`,
+      },
+      solution: {
+        title: "MindCalls unites AI, conversation and human analysis",
+        body: `With MindCalls, many customers are invited into conversations where an AI voice asks open, relevant questions. Answers are recorded, transcribed and rapidly prepared so human analysts can focus on interpreting the nuance and patterns in the complete data set.
+
+The result is deeper learning, faster analysis and qualitative insights at far greater scale – without losing the crucial human perspective.`,
+      },
+      features: [
         {
-          title: "How does MindCalls work?",
-          body:
-            "Customers are invited to take part in a conversation where an AI voice asks open, relevant questions developed for your specific challenge. Responses are recorded and transcribed automatically, before being analysed by experienced researchers. The output is delivered in an interactive dashboard, making it easy to find patterns and key quotes.",
+          title: "AI-assisted interviews",
+          desc: "Scalable interviews, with an AI voice conducting relevant conversations in parallel with many customers.",
         },
         {
-          title: "When is MindCalls most valuable?",
-          body:
-            "MindCalls is especially valuable when you need qualitative insight from many customers quickly – for example, to test new concepts, understand churn barriers, or get a broader picture of market shifts.",
+          title: "Automatic transcription",
+          desc: "Responses are instantly transcribed – and prepared for analysis.",
         },
         {
-          title: "Trust & GDPR",
-          body:
-            "Data security and anonymity are core. Participants are fully informed, and all data is handled securely and in compliance with regulations. You can access or delete your data at any time.",
+          title: "Intelligent analysis",
+          desc: "Text analysis and clustering structure large volumes of quotes and insight.",
+        },
+        {
+          title: "Human interpretation",
+          desc: "Experienced analysts draw out patterns and key insights – ensuring both depth and overview.",
+        },
+        {
+          title: "Actionable dashboard",
+          desc: "Results are presented in an interactive dashboard, ready to support your decisions.",
         },
       ],
-      cta: "Contact us to learn more",
-      ctaHref: "#contact",
+      benefits: {
+        title: "MindCalls – key advantages",
+        bullets: [
+          "Get qualitative insight from far more customers, faster",
+          "Keep the depth and nuance – don’t lose crucial detail in forms",
+          "Short path from data collection to insight",
+          "Flexible for your target group and challenge",
+        ],
+      },
+      gdpr: {
+        title: "Data security & GDPR",
+        body: `MindCalls is designed from the ground up for privacy and GDPR compliance. Participants are fully informed about usage and handling, and all data is managed in strict accordance with regulations. You can access or have your collected data erased at any time.`,
+      },
+      contact: {
+        cta: "Book an introduction or ask about possibilities",
+        ctaHref: "#contact"
+      }
     },
     about: {
       label: "About Mind the Customer",
@@ -369,9 +446,10 @@ const Navbar = ({
 }) => {
   const mainLinks = [
     { label: content.nav.services, href: "/#services", type: "a" },
-    { label: content.nav.howWeWork, href: "/#how", type: "a" },
-    { label: content.nav.mindcalls, href: "#mindcalls", type: "a" },
+    { label: content.nav.international, href: "/#international", type: "a" },
+    { label: content.nav.mindcalls, href: "/mindcalls", type: "link" },
     { label: content.nav.about, href: "/#about", type: "a" },
+    { label: content.nav.contact, href: "/#contact", type: "a" },
   ];
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-50 py-5">
@@ -381,6 +459,7 @@ const Navbar = ({
             to="/"
             className="w-8 h-8 flex items-center justify-center text-white font-bold rounded transition-all hover:opacity-95"
             style={{ background: BRAND_NAVY }}
+            aria-label="Goto homepage"
           >
             M
           </Link>
@@ -449,23 +528,24 @@ const Navbar = ({
 
 // --- HERO ---
 const Hero = ({ content }: { content: any }) => {
-  // Remove line breaks in title, then split at the highlight (if present).
   const rawTitle = (content.hero.title || "").replace(/\n/g, " ").trim();
   const highlight = (content.hero.highlight || "").replace(/\n/g, " ").trim();
 
-  // Find highlight at end of string (if present) and separate.
   let mainText = rawTitle;
   if (
     highlight &&
     rawTitle.endsWith(highlight)
   ) {
     mainText = rawTitle.slice(0, -highlight.length).trim();
-    // Remove leading . , ; etc from leftover text if necessary
-    if (mainText.endsWith(".") || mainText.endsWith(",") || mainText.endsWith(";") || mainText.endsWith(":")) {
+    if (
+      mainText.endsWith(".") ||
+      mainText.endsWith(",") ||
+      mainText.endsWith(";") ||
+      mainText.endsWith(":")
+    ) {
       mainText = mainText.slice(0, -1).trim();
     }
   }
-  // Render mainText + highlight (highlight colored same as CTA)
   return (
     <motion.section
       className="section-container min-h-[80vh] flex flex-col justify-center"
@@ -515,50 +595,103 @@ const Hero = ({ content }: { content: any }) => {
 };
 
 // --- WHAT WE DO / METHODS ---
-const WhatWeDo = ({ content }: { content: any }) => (
-  <motion.section
-    id="services"
-    style={{ background: BRAND_BG_ACCENT, transition: "background 0.3s" }}
-    {...fadeUp}
-  >
-    <div className="section-container">
-      <div className="max-w-3xl">
-        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
-          {content.whatWeDo.label ?? ""}
-        </span>
-        <h2 className={`${headingClass} mb-6`} style={{ color: BRAND_NAVY }}>
-          {content.whatWeDo.title ?? ""}
-        </h2>
-        <div className={`${bodyClass} mb-8 whitespace-pre-line`}>
-          {content.whatWeDo.body ?? ""}
-        </div>
-        {Array.isArray(content.whatWeDo.methodCards) && (
-          <div
-            className="grid gap-8 mt-8 grid-cols-1 md:grid-cols-2"
-          >
-            {content.whatWeDo.methodCards.map((card: any, idx: number) => (
-              <div
-                key={idx}
-                className="rounded-xl bg-white/80 border border-gray-100 p-10 shadow-sm flex flex-col min-h-[240px]"
-                style={{
-                  borderColor: BRAND_BG_ACCENT,
-                  boxSizing: "border-box",
-                }}
-              >
-                <div className="font-semibold mb-3 text-lg" style={{ color: BRAND_NAVY }}>
-                  {card.label ?? ""}
-                </div>
-                <div className="text-gray-700 text-base" style={{ lineHeight: 1.6 }}>
-                  {card.desc ?? ""}
-                </div>
-              </div>
-            ))}
+const WhatWeDo = ({ content }: { content: any }) => {
+  const isDanish =
+    content.nav?.services === "Hvad vi gør" ||
+    content.whatWeDo?.label === "Hvad vi gør";
+  const isEnglish =
+    content.nav?.services === "What we do" ||
+    content.whatWeDo?.label === "What we do";
+
+  const dkTitle = "Indsigt der forklarer — ikke bare beskriver";
+  const dkBody = `Data fortæller, hvad der sker. Sjældnere hvorfor — og endnu sjældnere, hvad man skal gøre ved det.
+
+Mind the Customer arbejder med kvalitative interviews, fokusgrupper, etnografiske studier og brugerstudier, der afdækker de holdninger, oplevelser og drivkræfter, som ligger bag kunders valg og fravalg.
+
+Afhængigt af problemstillingen suppleres de kvalitative indsigter med kvantitative analyser eller mixed methods-tilgange — så du får både dybde, overblik og et stærkere beslutningsgrundlag.
+
+AI indgår også som en integreret del af analysearbejdet, når det styrker kvalitet, hastighed eller skalerbarhed. Det gælder blandt andet MindCalls, hvor AI-assisterede samtaler gør det muligt at indsamle kvalitative indsigter i langt større skala — uden at miste den menneskelige fortolkning.
+
+Metoden vælges altid ud fra problemstillingen. Aldrig omvendt.`;
+
+  const enTitle = "Research that explains — not just describes";
+  const enBody = `Data tells you what is happening. Less often why — and even less often what to do about it.
+
+Mind the Customer works with qualitative interviews, focus groups, ethnographic studies and user research that uncover the attitudes, experiences and underlying drivers behind customers’ choices and behaviour.
+
+Depending on the problem, qualitative insights are complemented with quantitative analysis or mixed methods approaches — providing both depth, perspective and a stronger foundation for decision-making.
+
+AI is also integrated into the research process when it improves quality, speed or scalability. This includes MindCalls, where AI-assisted conversations make it possible to collect qualitative insights at a much larger scale — without losing human interpretation and contextual understanding.
+
+The method is always chosen based on the problem. Never the other way around.`;
+
+  function getMethodCardDesc(card: any, idx: number) {
+    if (isDanish) {
+      if (
+        card.label === "Mixed methods" ||
+        card.label?.toLocaleLowerCase().includes("mixed methods") ||
+        idx === 1
+      ) {
+        return "Kvantitative analyser og mixed methods-tilgange, når opgaven kræver både overblik, statistisk tyngde og dybere forståelse.";
+      }
+    }
+    if (isEnglish) {
+      if (
+        card.label === "Mixed methods" ||
+        card.label?.toLocaleLowerCase().includes("mixed methods") ||
+        idx === 1
+      ) {
+        return "Quantitative analysis and mixed methods approaches when the project requires both strategic overview, statistical rigour and deeper understanding.";
+      }
+    }
+    return card.desc ?? "";
+  }
+
+  return (
+    <motion.section
+      id="services"
+      style={{ background: BRAND_BG_ACCENT, transition: "background 0.3s" }}
+      {...fadeUp}
+    >
+      <div className="section-container">
+        <div className="max-w-3xl">
+          <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+            {content.whatWeDo.label ?? ""}
+          </span>
+          <h2 className={`${headingClass} mb-6 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
+            {isDanish ? dkTitle : isEnglish ? enTitle : content.whatWeDo.title ?? ""}
+          </h2>
+          <div className={`${bodyClass} mb-8 whitespace-pre-line`}>
+            {isDanish ? dkBody : isEnglish ? enBody : content.whatWeDo.body ?? ""}
           </div>
-        )}
+          {Array.isArray(content.whatWeDo.methodCards) && (
+            <div
+              className="grid gap-8 mt-8 grid-cols-1 md:grid-cols-2"
+            >
+              {content.whatWeDo.methodCards.map((card: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="rounded-xl bg-white/80 border border-gray-100 p-10 shadow-sm flex flex-col min-h-[240px]"
+                  style={{
+                    borderColor: BRAND_BG_ACCENT,
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <div className="font-semibold mb-3 text-lg" style={{ color: BRAND_NAVY }}>
+                    {card.label ?? ""}
+                  </div>
+                  <div className="text-gray-700 text-base" style={{ lineHeight: 1.6 }}>
+                    {getMethodCardDesc(card, idx)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  </motion.section>
-);
+    </motion.section>
+  );
+};
 
 // --- HOW WE WORK ---
 const HowWeWork = ({ content }: { content: any }) => (
@@ -597,54 +730,75 @@ const HowWeWork = ({ content }: { content: any }) => (
 );
 
 // --- INTERNATIONAL PROJECTS ---
-const InternationalClients = ({ content }: { content: any }) => (
-  <motion.section style={{ background: BRAND_NAVY, color: "#fff" }} {...fadeUp}>
-    <div className="section-container">
-      <div className="max-w-3xl mx-auto py-10">
-        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
-          {content.internationalProjects.label ?? ""}
-        </span>
-        <h2 className={`${headingClass} mb-6 leading-tight whitespace-pre-line`} style={{ color: "#fff" }}>
-          {content.internationalProjects.title ?? ""}
-        </h2>
-        <div className={`text-xl font-normal text-[#B8C3D6] whitespace-pre-line mb-4`}>
-          {content.internationalProjects.body ?? ""}
-        </div>
-        {Array.isArray(content.internationalProjects.bullets) && (
-          <div className="flex flex-wrap gap-3 mt-4">
-            {content.internationalProjects.bullets.map((tag: string, idx: number) => (
-              <span
-                key={idx}
-                className="text-xs"
-                style={{
-                  background: BRAND_SECONDARY,
-                  color: "#fff",
-                  borderRadius: "9999px",
-                  padding: "3px 16px",
-                  textTransform: "uppercase",
-                  fontWeight: 500,
-                  letterSpacing: "0.06em",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  </motion.section>
-);
+const InternationalClients = ({ content }: { content: any }) => {
+  const isDanish =
+    content.nav?.services === "Hvad vi gør" ||
+    content.internationalProjects?.label === "Internationale projekter";
+  const isEnglish =
+    content.nav?.services === "What we do" ||
+    content.internationalProjects?.label === "International projects";
+  const dkTitle =
+    "Vil du forstå danske forbrugere?\n\nEller sammenligne indsigter på tværs af markeder?";
+  const dkBody = `Danske forbrugere har deres egne præferencer, kulturelle koder og måder at træffe beslutninger på. At forstå dem kræver lokal indsigt, kontekstforståelse og metoder, der kommer tættere på virkeligheden bag data.
 
-// --- MINDCALLS TEASER ---
+Mind the Customer hjælper både internationale virksomheder med studier på det danske marked og danske virksomheder, der arbejder internationalt eller ønsker indsigter på tværs af lande og kulturer.
+
+Studier gennemføres både lokalt og i samarbejde med internationale partnere, afhængigt af projektets omfang og geografiske behov.`;
+  const enTitle =
+    "Looking to understand Danish consumers?\n\nOr compare insights across markets?";
+  const enBody = `Danish consumers have their own preferences, cultural codes and ways of making decisions. Understanding them requires local insight, contextual understanding and methods that get closer to the reality behind the data.
+
+Mind the Customer supports both international companies conducting studies in Denmark and Danish companies working internationally or seeking insights across countries and cultures.
+
+Studies are conducted both locally and in collaboration with international partners, depending on the scope and geographic needs of the project.`;
+
+  return (
+    <motion.section id="international" style={{ background: BRAND_NAVY, color: "#fff" }} {...fadeUp}>
+      <div className="section-container">
+        <div className="max-w-3xl mx-auto py-10">
+          <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+            {content.internationalProjects.label ?? ""}
+          </span>
+          <h2 className={`${headingClass} mb-6 leading-tight whitespace-pre-line`} style={{ color: "#fff" }}>
+            {isDanish ? dkTitle : isEnglish ? enTitle : content.internationalProjects.title ?? ""}
+          </h2>
+          <div className={`text-xl font-normal text-[#B8C3D6] whitespace-pre-line mb-4`}>
+            {isDanish ? dkBody : isEnglish ? enBody : content.internationalProjects.body ?? ""}
+          </div>
+          {Array.isArray(content.internationalProjects.bullets) && (
+            <div className="flex flex-wrap gap-3 mt-4">
+              {content.internationalProjects.bullets.map((tag: string, idx: number) => (
+                <span
+                  key={idx}
+                  className="text-xs"
+                  style={{
+                    background: BRAND_SECONDARY,
+                    color: "#fff",
+                    borderRadius: "9999px",
+                    padding: "3px 16px",
+                    textTransform: "uppercase",
+                    fontWeight: 500,
+                    letterSpacing: "0.06em",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+// --- MINDCALLS TEASER (for HOME only) ---
 const MindCallsTeaser = ({ content }: { content: any }) => {
+  const navigate = useNavigate();
   const c = content.mindCallsTeaser;
   return (
     <motion.section id="mindcalls" className="section-container" {...fadeUp}>
       <div className="max-w-3xl">
-        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
-          {c.eyebrow ?? ""}
-        </span>
         <h2 className={`${headingClass} mb-6 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
           {c.title ?? ""}
         </h2>
@@ -653,8 +807,8 @@ const MindCallsTeaser = ({ content }: { content: any }) => {
             {p}
           </div>
         ))}
-        <a
-          href={c.ctaHref}
+        <button
+          onClick={() => navigate("/mindcalls")}
           className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
           style={{
             background: BRAND_SECONDARY,
@@ -666,51 +820,129 @@ const MindCallsTeaser = ({ content }: { content: any }) => {
           <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
             <ArrowRight size={20} />
           </span>
-        </a>
+        </button>
       </div>
     </motion.section>
   );
 };
 
-// --- MINDCALLS EXPANDED SECTION ---
-const MindCallsDetail = ({ content }: { content: any }) => {
-  const c = content.mindCallsDetail;
+// --- DEDICATED MINDCALLS PRODUCT PAGE ---
+const MindCallsPage = ({ content }: { content: any }) => {
+  const mindcalls = content.mindCallsDetail;
   return (
-    <motion.section id="mindcalls-detail" className="section-container" {...fadeUp}>
-      <div className="max-w-3xl">
-        <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
-          {c.eyebrow ?? ""}
-        </span>
-        <h2 className={`${headingClass} mb-6 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
-          {c.title ?? ""}
-        </h2>
-        <div className={`${bodyClass} mb-6 whitespace-pre-line`}>
-          {c.intro}
-        </div>
-        {Array.isArray(c.sections) && c.sections.map((section: any, idx: number) => (
-          <div key={idx} className="mb-6">
-            <div className="font-semibold text-lg mb-2" style={{ color: BRAND_SECONDARY }}>
-              {section.title}
+    <main>
+      {/* Hero Section */}
+      <motion.section className="section-container mt-12 mb-12" {...fadeUp}>
+        <div className="max-w-3xl mx-auto text-center">
+          {mindcalls.hero.eyebrow && (
+            <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
+              {mindcalls.hero.eyebrow}
+            </span>
+          )}
+          <h1 className={`${headingClass} mb-4 whitespace-pre-line`} style={{ color: BRAND_NAVY }}>
+            {mindcalls.hero.title}
+          </h1>
+          {mindcalls.hero.subtitle && (
+            <div className={`${bodyClass} mb-7 text-gray-700`} style={{ opacity: 0.89 }}>
+              {mindcalls.hero.subtitle}
             </div>
-            <div className="text-base text-gray-700 whitespace-pre-line">{section.body}</div>
+          )}
+          <a
+            href={mindcalls.hero.ctaHref}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
+            style={{ background: BRAND_SECONDARY, color: "#fff" }}
+          >
+            {mindcalls.hero.cta}
+            <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
+              <ArrowRight size={20} />
+            </span>
+          </a>
+        </div>
+      </motion.section>
+
+      {/* Problem Section */}
+      <motion.section className="section-container max-w-3xl mx-auto" {...fadeUp}>
+        <div className="mb-8">
+          <h2 className={`${headingClass} mb-4 text-2xl md:text-3xl`} style={{ color: BRAND_SECONDARY }}>
+            {mindcalls.problem.title}
+          </h2>
+          <div className={`${bodyClass} whitespace-pre-line`} style={{ color: BRAND_NAVY, opacity: 0.93 }}>
+            {mindcalls.problem.body}
           </div>
-        ))}
-        <a
-          href={c.ctaHref}
-          className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
-          style={{
-            background: BRAND_SECONDARY,
-            color: "#fff",
-            transition: "transform 0.2s, background 0.2s",
-          }}
-        >
-          {c.cta}
-          <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
-            <ArrowRight size={20} />
-          </span>
-        </a>
-      </div>
-    </motion.section>
+        </div>
+      </motion.section>
+
+      {/* Solution / Workflow */}
+      <motion.section className="section-container max-w-3xl mx-auto py-12" {...fadeUp}>
+        <div className="mb-8">
+          <h2 className={`${headingClass} mb-4 text-2xl md:text-3xl`} style={{ color: BRAND_SECONDARY }}>
+            {mindcalls.solution.title}
+          </h2>
+          <div className={`${bodyClass} whitespace-pre-line`} style={{ color: BRAND_NAVY, opacity: 0.93 }}>
+            {mindcalls.solution.body}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          {mindcalls.features.map((f: any, idx: number) => (
+            <div
+              key={f.title}
+              className="bg-white/90 border border-gray-100 rounded-xl shadow-sm p-6 flex flex-col min-h-[140px]"
+              style={{ borderColor: BRAND_BG_ACCENT }}
+            >
+              <div className="font-semibold text-lg mb-2" style={{ color: BRAND_NAVY }}>
+                {f.title}
+              </div>
+              <div className="text-base text-gray-700" style={{ lineHeight: 1.5 }}>
+                {f.desc}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Benefits */}
+      {mindcalls.benefits && (
+        <motion.section className="section-container max-w-3xl mx-auto py-8" {...fadeUp}>
+          <h2 className={`${headingClass} mb-5 text-2xl md:text-3xl`} style={{ color: BRAND_SECONDARY }}>
+            {mindcalls.benefits.title}
+          </h2>
+          <ul className="list-none space-y-4">
+            {mindcalls.benefits.bullets.map((b: string, idx: number) => (
+              <li key={idx} className={`${bodyClass} flex gap-3 items-start`} style={{ color: BRAND_NAVY }}>
+                <span className="mt-2 w-3 h-3 rounded-full inline-block" style={{ background: BRAND_SECONDARY, marginRight: 8, minWidth: 12 }}></span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.section>
+      )}
+
+      {/* GDPR/Trust */}
+      <motion.section className="section-container max-w-3xl mx-auto py-8" {...fadeUp}>
+        <h2 className={`${headingClass} mb-4 text-2xl md:text-3xl`} style={{ color: BRAND_SECONDARY }}>
+          {mindcalls.gdpr.title}
+        </h2>
+        <div className={`${bodyClass} whitespace-pre-line`} style={{ color: BRAND_NAVY, opacity: 0.89 }}>
+          {mindcalls.gdpr.body}
+        </div>
+      </motion.section>
+
+      {/* Contact CTA */}
+      {mindcalls.contact && (
+        <motion.section className="section-container max-w-3xl mx-auto py-10 flex justify-center" {...fadeUp}>
+          <a
+            href={mindcalls.contact.ctaHref}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-200 group hover:scale-[1.022] focus:outline-none"
+            style={{ background: BRAND_SECONDARY, color: "#fff" }}
+          >
+            {mindcalls.contact.cta}
+            <span className="inline-block transition-transform duration-200 group-hover:translate-x-2">
+              <ArrowRight size={20} />
+            </span>
+          </a>
+        </motion.section>
+      )}
+    </main>
   );
 };
 
@@ -878,7 +1110,6 @@ const MainPage = ({ content }: { content: any }) => (
       <HowWeWork content={content} />
       <InternationalClients content={content} />
       <MindCallsTeaser content={content} />
-      <MindCallsDetail content={content} />
       <About content={content} />
       <Clients content={content} />
       <Contact content={content} />
@@ -886,27 +1117,7 @@ const MainPage = ({ content }: { content: any }) => (
   </AnimatePresence>
 );
 
-const MindCallsPage = () => {
-  const loc = useLocation();
-  const [lang, setLang] = useState<Language>(() => {
-    if (
-      typeof window !== "undefined" &&
-      (window.location.pathname.startsWith("/en") ||
-        window.location.pathname.endsWith("/en"))
-    )
-      return "en";
-    return "da";
-  });
-
-  useEffect(() => {
-    if (loc.pathname.startsWith("/en")) setLang("en");
-    else setLang("da");
-  }, [loc.pathname]);
-  const content = translations[lang];
-
-  return <MindCallsDetail content={content} />;
-};
-
+// --- APP ROUTING & APP ---
 export default function App() {
   const [lang, setLang] = useState<Language>("da");
   const content = translations[lang];
@@ -918,7 +1129,10 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={<MainPage content={content} />} />
-          <Route path="/mindcalls" element={<MindCallsPage />} />
+          <Route
+            path="/mindcalls"
+            element={<MindCallsPage content={content} />}
+          />
         </Routes>
 
         <Footer content={content} />
