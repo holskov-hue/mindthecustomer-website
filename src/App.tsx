@@ -125,7 +125,7 @@ Resultatet er dybere læring, hurtigere analyse og kvalitative indsigter i langt
         subtitle:
           "Platformen til AI-assisteret kundeindsigt, hvor menneskelig analyse og teknologi mødes.",
         cta: "Book en demo",
-        ctaHref: "#contact",
+        ctaHref: "https://calendly.com/holskov/30min",
       },
       problem: {
         title: "Stærkere indsigt kræver mere end tal og enkle spørgeskemaer",
@@ -325,7 +325,7 @@ The result is deeper learning, faster analysis and qualitative insight at a much
         subtitle:
           "The platform for AI-assisted customer insight, combining human analysis and technology.",
         cta: "Book a demo",
-        ctaHref: "#contact",
+        ctaHref: "https://calendly.com/holskov/30min",
       },
       problem: {
         title: "Deeper insight takes more than numbers and basic surveys",
