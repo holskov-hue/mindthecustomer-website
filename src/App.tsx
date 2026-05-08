@@ -176,7 +176,7 @@ Resultatet er dybere læring, hurtigere analyse og kvalitative indsigter i langt
       },
       contact: {
         cta: "Book en intro eller spørg om mulighederne",
-        ctaHref: "#contact"
+        ctaHref: "https://calendly.com/holskov/30min",
       }
     },
     about: {
@@ -376,7 +376,7 @@ The result is deeper learning, faster analysis and qualitative insights at far g
       },
       contact: {
         cta: "Book an introduction or ask about possibilities",
-        ctaHref: "#contact"
+        ctaHref: "https://calendly.com/holskov/30min",
       }
     },
     about: {
@@ -896,7 +896,7 @@ const MindTellPage = ({ content }: { content: any }) => {
   return (
     <main>
       {/* Hero Section */}
-      <motion.section className="section-container mt-12 mb-12" {...fadeUp}>
+      <motion.section className="section-container mt-12 mb-0" {...fadeUp}>
         <div className="max-w-3xl mx-auto text-center">
           {mindtell.hero.eyebrow && (
             <span className="block text-xs font-medium uppercase tracking-[0.3em] mb-4" style={{ color: BRAND_NEUTRAL }}>
